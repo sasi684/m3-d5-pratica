@@ -6,21 +6,23 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _speed = 4f;
 
-    private PlayerController _player;
+    private Rigidbody2D _rb;
+    private GameObject _player;
 
     private void Awake()
     {
-        _player = GameObject.FindAnyObjectByType<PlayerController>();
+        _rb = GetComponent<Rigidbody2D>();
+        _player = GameObject.FindGameObjectWithTag("Player");
     }
 
     private void Update()
     {
-        EnemyMovement();
+        if (_player != null) EnemyMovement();
     }
 
     void EnemyMovement()
     {
-        transform.position = Vector2.MoveTowards(transform.position, _player.transform.position, 10f) * _speed;
+        transform.position = Vector3.MoveTowards(transform.position, _player.transform.position, _speed * Time.deltaTime);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -28,4 +30,6 @@ public class Enemy : MonoBehaviour
         if(collision.collider.CompareTag("Player"))
             Destroy(collision.gameObject);
     }
+
+    public Rigidbody2D GetRigidbody2D() => _rb;
 }

@@ -5,14 +5,14 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [SerializeField] private float _speed = 5f;
+    [SerializeField] private Rigidbody2D _rb;
+    private Vector2 _direction;
+
     public float Speed { get => _speed; set => _speed = value; }
 
-    private Rigidbody2D _rb;
-
-    private void Awake()
+    public void SetBullet(Vector2 direction)
     {
-        _rb = GetComponent<Rigidbody2D>();
-        if (!_rb) Debug.LogError($"Nessuna componente RigidBody2D trovata per l'oggetto {gameObject.name}!!");
+        _direction = direction;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -23,8 +23,8 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-    public Rigidbody2D GetRigidbody2D() => _rb;
-    public Rigidbody2D SetRigidbody2D(Rigidbody2D rb) => _rb = rb;
-
+    private void FixedUpdate()
+    {
+        _rb.MovePosition(_rb.position + _direction * (_speed * Time.fixedDeltaTime));
+    }
 }
