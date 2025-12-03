@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        if (_player != null) EnemyMovement();
+        if (_player) EnemyMovement();
     }
 
     void EnemyMovement()
@@ -30,6 +30,4 @@ public class Enemy : MonoBehaviour
         if(collision.collider.CompareTag("Player"))
             Destroy(collision.gameObject);
     }
-
-    public Rigidbody2D GetRigidbody2D() => _rb;
 }
